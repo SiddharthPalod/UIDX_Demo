@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import user from './assets/user.svg';
+
 function App() {
   const [lockerName, setLockerName] = useState('');
   const [connectionName, setConnectionName] = useState('');
@@ -15,11 +16,8 @@ function App() {
         },
         body: JSON.stringify({ locker_name: lockerName }),
       });
-      if (response.ok) {
-        setMessage('Locker freeze request is successful!');
-      } else {
-        setMessage('Failed to freeze locker.');
-      }
+      const result = await response.json();
+      setMessage(result.message || 'Failed to freeze locker.');
     } catch (error) {
       setMessage('An error occurred.');
     }
@@ -35,11 +33,8 @@ function App() {
         },
         body: JSON.stringify({ connection_name: connectionName }),
       });
-      if (response.ok) {
-        setMessage('Connection freeze request is successful!');
-      } else {
-        setMessage('Failed to freeze connection.');
-      }
+      const result = await response.json();
+      setMessage(result.message || 'Failed to freeze connection.');
     } catch (error) {
       setMessage('An error occurred.');
     }
@@ -61,35 +56,34 @@ function App() {
       </nav>
 
       <div className='px-4 flex flex-col md:flex-row justify-evenly mt-4 items-start py-4'>
-
-      <form onSubmit={handleFreezeLocker} className='flex flex-col justify-center items-center gap-10'>
-        <label className='text-lg md:text-2xl font-bold'>
-          Enter Locker Name
-          <input
-            type="text"
-            placeholder='Enter Locker Name'
-            value={lockerName}
-            className='p-2 border-2 border-blue-500 rounded-md mx-4 w-52 font-normal md:text-xl'
-            onChange={(e) => setLockerName(e.target.value)}
-          />
-        </label>
-        <button type="submit" className='bg-blue-500 rounded-2xl text-white px-8 py-4 mb-4'>Freeze Locker</button>
-      </form>
-      <form onSubmit={handleFreezeConnection} className='flex flex-col justify-center items-center gap-10'>
-      <label className='text-lg md:text-2xl font-bold'>
-        Enter Connection Name
-          <input
-            type="text"
-            placeholder='Enter Conn Name'
-            value={connectionName}
-            className='p-2 border-2 border-blue-500 rounded-md mx-4 w-52 font-normal md:text-xl'
-            onChange={(e) => setConnectionName(e.target.value)}
-          />
-        </label>
-        <button type="submit" className='bg-blue-500 rounded-2xl text-white px-8 py-4'>Freeze Connection</button>
-      </form>
+        <form onSubmit={handleFreezeLocker} className='flex flex-col justify-center items-center gap-10'>
+          <label className='text-lg md:text-2xl font-bold'>
+            Enter Locker Name
+            <input
+              type="text"
+              placeholder='Enter Locker Name'
+              value={lockerName}
+              className='p-2 border-2 border-blue-500 rounded-md mx-4 w-52 font-normal md:text-xl'
+              onChange={(e) => setLockerName(e.target.value)}
+            />
+          </label>
+          <button type="submit" className='bg-blue-500 rounded-2xl text-white px-8 py-4 mb-4'>Freeze Locker</button>
+        </form>
+        <form onSubmit={handleFreezeConnection} className='flex flex-col justify-center items-center gap-10'>
+          <label className='text-lg md:text-2xl font-bold'>
+            Enter Connection Name
+            <input
+              type="text"
+              placeholder='Enter Conn Name'
+              value={connectionName}
+              className='p-2 border-2 border-blue-500 rounded-md mx-4 w-52 font-normal md:text-xl'
+              onChange={(e) => setConnectionName(e.target.value)}
+            />
+          </label>
+          <button type="submit" className='bg-blue-500 rounded-2xl text-white px-8 py-4'>Freeze Connection</button>
+        </form>
       </div>
-    {message && <div className='bg-green-300 text-green-950 p-4 border-2 border-green-950'>{message}</div>}
+      {message && <div className='bg-green-300 text-green-950 p-4 border-2 border-green-950'>{message}</div>}
     </div>
   );
 }
